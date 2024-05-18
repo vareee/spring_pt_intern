@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  db:
+    image: db
+    container_name: db_container
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - log_volume:/var/log/postgresql
+    env_file:
+      - '.env'
+    networks:
+      vare_network:
+        ipv4_address: 12.12.0.12
+
+  bot:
+    image: bot
+    container_name: bot_container
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    volumes:
+      - log_volume:/var/log/postgresql
+    env_file:
+      - '.env'
+    networks:
+      vare_network:
+        ipv4_address: 12.12.0.11
+    depends_on:
+      - db
+
+  db_repl:
+    image: db_repl
+    container_name: db_repl_container
+    build:
+      context: ./db_repl
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - '.env'
+    networks:
+      vare_network:
+        ipv4_address: 12.12.0.13
+    depends_on:
+      - db
+
+networks:
+  vare_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet:  12.12.0.0/24
+ 
+volumes:
+  log_volume:
