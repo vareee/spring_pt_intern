@@ -1,0 +1,3 @@
+bot ansible_host=IP ansible_user=ansible_user ansible_password=ansible_password
+db ansible_host=IP ansible_user=ansible_user ansible_password=ansible_password
+db_repl ansible_host=IP ansible_user=ansible_user ansible_password=ansible_password
