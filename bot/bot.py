@@ -444,12 +444,11 @@ async def get_apt_services(message: Message):
 # replication logs
 @router.message(Command("get_repl_logs"))
 async def get_repl_logs(message: Message):
-    result = subprocess.run(["tail", "-n", "10", "/var/log/postgresql/postgresql.log"], capture_output=True, text=True)
+    result = subprocess.run(["cat", "/var/log/postgresql/postgresql.log"], capture_output=True, text=True)
     data = result.stdout
-    data = str(data).replace('\\n', '\n').replace('\\t', '\t')[2:-1] 
-    await message.answer(
-        text=data
-    )
+    ans = str(data).replace('\\n', '\n').replace('\\t', '\t')[2:-1]
+    for i in range(0, len(ans), 4096):
+        await message.answer(text=ans[i:i+4096])
 
 # достать email из бд
 @router.message(Command("get_emails"))
