@@ -451,7 +451,7 @@ async def get_repl_logs(message: Message):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(hostname=host, username=username, password=password, port=port)
-    stdin, stdout, stderr = client.exec_command('cat /var/log/postgresql/postgresql.log')
+    stdin, stdout, stderr = client.exec_command('cat /var/log/postgresql/postgresql.log | grep repl_user')
     data = stdout.read()
     client.close()
     ans = str(data).replace('\\n', '\n').replace('\\t', '\t')[2:-1]
