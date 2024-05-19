@@ -445,9 +445,9 @@ async def get_apt_services(message: Message):
 @router.message(Command("get_repl_logs"))
 async def get_repl_logs(message: Message):
     host = os.getenv('DB_HOST')
-    port = os.getenv('DB_PORT')
-    username = os.getenv('DB_USER')
-    password = os.getenv('DB_PASSWORD')
+    port = os.getenv('RM_PORT')
+    username = os.getenv('RM_USER')
+    password = os.getenv('RM_PASSWORD')
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(hostname=host, username=username, password=password, port=port)
